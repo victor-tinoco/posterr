@@ -18,3 +18,8 @@ doc/api/
 *.js_
 *.js.deps
 *.js.map
+
+# Dart generated files
+*.g.dart
+*.freezed.dart
+*.mocks.dart
