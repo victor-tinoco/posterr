@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:posterr/ui/pages/home/home_page.dart';
+import 'package:posterr/ui/pages/profile/profile_page.dart';
 
 void main() {
   runApp(const PosterrApp());
@@ -11,10 +13,12 @@ class PosterrApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Posterr',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const SizedBox(),
+      theme: ThemeData(),
+      initialRoute: HomePage.routeName,
+      routes: {
+        HomePage.routeName: (context) => const HomePage(),
+        ProfilePage.routeName: (context) => const ProfilePage(),
+      },
     );
   }
 }
