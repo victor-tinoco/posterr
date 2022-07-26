@@ -11,8 +11,6 @@ part 'content.freezed.dart';
 /// * Quote-post: a post based in another post, also with a message along with it.
 @freezed
 class Content with _$Content {
-  @Assert('message.isNotEmpty', 'Message cannot be empty.')
-  @Assert('message.length <= 777', 'Message cannot be greater than 777 characters.')
   const factory Content.post({
     required User author,
 
@@ -29,7 +27,7 @@ class Content with _$Content {
     required DateTime postedAt,
   }) = Repost;
 
-  @Assert('message.isNotEmpty', 'Message cannot be empty.')
+  @Assert('message > 0', 'Message cannot be empty.')
   @Assert('message.length <= 777', 'Message cannot be greater than 777 characters.')
   const factory Content.quotePost({
     required User author,
