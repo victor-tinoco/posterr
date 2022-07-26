@@ -30,6 +30,10 @@ class ShareContent {
       }
     }
 
+    if (content.author != authRepository.loggedUser.value) {
+      return EmptyResult.failure(UnauthorizedPostAuthorFailure());
+    }
+
     return contentRepository.shareContent(content);
   }
 }
@@ -37,4 +41,9 @@ class ShareContent {
 class DailyPostsLimitExceededFailure implements Failure {
   @override
   String get message => 'You have reached out your daily post limit. Try again tomorrow.';
+}
+
+class UnauthorizedPostAuthorFailure implements Failure {
+  @override
+  String get message => 'It is not possible to share a content with an author other than you.';
 }
