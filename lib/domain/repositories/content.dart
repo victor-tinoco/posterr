@@ -1,5 +1,9 @@
-import 'package:posterr/domain/entities/user.dart';
+import 'package:posterr/domain/entities/entities.dart';
 
 abstract class ContentRepository {
-  Future<void> getContents({User? user});
+  Future<Result<List<Content>>> getContents({
+    User? user,
+    int page,
+    int? itemsLengthPerPage,
+  });
 }
