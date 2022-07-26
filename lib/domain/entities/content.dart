@@ -20,11 +20,13 @@ class Content with _$Content {
     ///
     /// Must not be non-empty and greater than 777 characters.
     required String message,
+    required DateTime postedAt,
   }) = Post;
 
   const factory Content.repost({
     required User author,
     required Post originalPost,
+    required DateTime postedAt,
   }) = Repost;
 
   @Assert('message.isNotEmpty', 'Message cannot be empty.')
@@ -39,5 +41,6 @@ class Content with _$Content {
     ///
     /// Must not be non-empty and greater than 777 characters.
     required String message,
+    required DateTime postedAt,
   }) = PostReply;
 }

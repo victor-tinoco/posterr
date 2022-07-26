@@ -12,8 +12,8 @@ part 'result.freezed.dart';
 /// into an error screen, or to show the data.
 @freezed
 class Result<T> with _$Result<T> {
-  const factory Result.data(T value) = _ResultData;
-  const factory Result.failure(Failure failure) = _ResultFailure;
+  const factory Result.data(T value) = ResultData;
+  const factory Result.failure(Failure failure) = ResultFailure;
 }
 
 /// An utility for safely manipulating an empty result.
@@ -26,8 +26,8 @@ class Result<T> with _$Result<T> {
 /// into an error screen, or to show the data.
 @freezed
 class EmptyResult with _$EmptyResult {
-  const factory EmptyResult.success() = _EmptyResultSuccess;
-  const factory EmptyResult.failure(Failure failure) = _EmptyResultFailure;
+  const factory EmptyResult.success() = EmptyResultSuccess;
+  const factory EmptyResult.failure(Failure failure) = EmptyResultFailure;
 }
 
 @immutable
