@@ -1,5 +1,14 @@
 import 'package:posterr/domain/domain.dart';
 
+/// {@template domain.post_content}
+/// Shares a given [content].
+///
+/// When sharing a content, it is not possible to set an author other than the logged
+/// in. Also, returns a failure when the user has reached out its daily post limit.
+///
+/// See more:
+/// * [Content], an user-generated text-based content.
+/// {@endtemplate}
 class ShareContent {
   ShareContent({
     required this.getLoggedUserContent,
@@ -11,6 +20,7 @@ class ShareContent {
   final AuthRepository authRepository;
   final ContentRepository contentRepository;
 
+  /// {@macro domain.post_content}
   Future<EmptyResult> call(Content content) async {
     final userContentResult = await getLoggedUserContent();
 
