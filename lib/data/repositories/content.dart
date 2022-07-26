@@ -30,4 +30,10 @@ class ContentRepositoryMock implements ContentRepository {
 
     return Result.data(list);
   }
+
+  @override
+  Future<EmptyResult> shareContent(Content content) async {
+    _cache.add(content);
+    return const EmptyResult.success();
+  }
 }
