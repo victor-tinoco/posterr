@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:posterr/data/repositories/auth.dart';
-import 'package:posterr/data/repositories/content.dart';
 import 'package:posterr/domain/domain.dart';
 import 'package:posterr/ui/pages/profile/profile_page.dart';
 import 'package:posterr/ui/widgets/timeline/timeline.dart';
@@ -16,12 +14,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final contentRepository = ContentRepositoryMock();
-  final authRepository = AuthRepositoryMock();
-
-  late final getTimelineContent = GetTimelineContent(contentRepository: contentRepository);
-  late final sharePost = SharePost(contentRepository: contentRepository, authRepository: authRepository, getLoggedUserContent: GetLoggedUserContent(contentRepository: contentRepository, authRepository: authRepository));
-
   final sharePostTextController = TextEditingController();
 
   @override
@@ -33,7 +25,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => TimelineBloc(getContent: getTimelineContent, sharePost: sharePost) //
+      create: (context) => TimelineBloc(getContent: context.read<GetTimelineContent>(), sharePost: context.read()) //
         ..add(const TimelineEvent.contentsFetched()),
       child: Builder(
         builder: (context) {
@@ -69,8 +61,10 @@ class _HomePageState extends State<HomePage> {
                       const SizedBox(width: 8.0),
                       IconButton(
                         icon: const Icon(Icons.person),
-                        onPressed: () {
-                          Navigator.of(context).pushNamed(ProfilePage.routeName);
+                        onPressed: () async {
+                          await Navigator.of(context).pushNamed(ProfilePage.routeName);
+                          final bloc = context.read<TimelineBloc>();
+                          bloc.add(const ContentsFetchedTimelineEvent());
                         },
                       ),
                     ],

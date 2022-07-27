@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:posterr/data/repositories/auth.dart';
-import 'package:posterr/data/repositories/content.dart';
 import 'package:posterr/domain/domain.dart';
 import 'package:posterr/ui/widgets/timeline/timeline.dart';
 
@@ -16,12 +14,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final contentRepository = ContentRepositoryMock();
-  final authRepository = AuthRepositoryMock();
-
-  late final getLoggedUserContent = GetLoggedUserContent(contentRepository: contentRepository, authRepository: authRepository);
-  late final sharePost = SharePost(contentRepository: contentRepository, authRepository: authRepository, getLoggedUserContent: GetLoggedUserContent(contentRepository: contentRepository, authRepository: authRepository));
-
   final sharePostTextController = TextEditingController();
 
   @override
@@ -33,7 +25,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => TimelineBloc(getContent: getLoggedUserContent, sharePost: sharePost) //
+      create: (context) => TimelineBloc(getContent: context.read<GetLoggedUserContent>(), sharePost: context.read()) //
         ..add(const TimelineEvent.contentsFetched()),
       child: Builder(
         builder: (context) {
@@ -47,7 +39,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 Padding(
                   padding: const EdgeInsets.all(24.0),
                   child: ValueListenableBuilder<User?>(
-                    valueListenable: authRepository.loggedUser,
+                    valueListenable: context.read<AuthRepository>().loggedUser,
                     builder: (context, user, child) {
                       final joinedAt = user?.joinedAt;
 
