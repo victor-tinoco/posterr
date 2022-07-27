@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:posterr/data/repositories/auth.dart';
 import 'package:posterr/data/repositories/content.dart';
 import 'package:posterr/domain/domain.dart';
 import 'package:posterr/ui/pages/home/bloc/timeline_bloc.dart';
@@ -16,42 +17,90 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final getTimelineContent = GetTimelineContent(contentRepository: ContentRepositoryMock());
+  final contentRepository = ContentRepositoryMock();
+  final authRepository = AuthRepositoryMock();
+
+  late final getTimelineContent = GetTimelineContent(contentRepository: contentRepository);
+  late final sharePost = SharePost(contentRepository: contentRepository, authRepository: authRepository, getLoggedUserContent: GetLoggedUserContent(contentRepository: contentRepository, authRepository: authRepository));
+
+  final sharePostTextController = TextEditingController();
+
+  @override
+  void dispose() {
+    sharePostTextController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => TimelineBloc(getTimelineContent: getTimelineContent) //
+      create: (context) => TimelineBloc(getTimelineContent: getTimelineContent, sharePost: sharePost) //
         ..add(const TimelineEvent.contentsFetched()),
-      child: Scaffold(
-        appBar: AppBar(title: const Text('Posterr')),
-        body: BlocBuilder<TimelineBloc, TimelineState>(
-          builder: (context, state) {
-            if (state.contentList.isEmpty) {
-              switch (state.status) {
-                case TimelineStatus.loading:
-                  return const Center(child: CircularProgressIndicator());
-                case TimelineStatus.failure:
-                  return const Center(child: Text('Something went wrong, try again later.'));
-                case TimelineStatus.success:
-                  return const Center(child: Text('Empty timeline, try sharing some content.'));
-              }
-            } else {
-              return ListView.separated(
-                itemCount: state.contentList.length,
-                separatorBuilder: (context, index) => const Divider(height: 1, thickness: 1),
-                itemBuilder: (context, index) {
-                  return state.contentList[index].map(
-                    post: PostCard.new,
-                    repost: RepostCard.new,
-                    quotePost: PostCard.quote,
+      child: Builder(
+        builder: (context) {
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('Posterr'),
+              bottom: PreferredSize(
+                preferredSize: const Size.fromHeight(58),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: sharePostTextController,
+                          decoration: const InputDecoration(
+                            border: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+                            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+                            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8.0),
+                      IconButton(
+                        icon: const Icon(Icons.send),
+                        onPressed: () {
+                          final bloc = context.read<TimelineBloc>();
+                          final event = TimelineEvent.postShared(sharePostTextController.text);
+                          bloc.add(event);
+                          sharePostTextController.clear();
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            body: BlocBuilder<TimelineBloc, TimelineState>(
+              builder: (context, state) {
+                if (state.contentList.isEmpty) {
+                  switch (state.status) {
+                    case TimelineStatus.loading:
+                      return const Center(child: CircularProgressIndicator());
+                    case TimelineStatus.failure:
+                      return const Center(child: Text('Something went wrong, try again later.'));
+                    case TimelineStatus.success:
+                      return const Center(child: Text('Empty timeline, try sharing some content.'));
+                  }
+                } else {
+                  return ListView.separated(
+                    itemCount: state.contentList.length,
+                    separatorBuilder: (context, index) => const Divider(height: 1, thickness: 1),
+                    itemBuilder: (context, index) {
+                      return state.contentList[index].map(
+                        post: PostCard.new,
+                        repost: RepostCard.new,
+                        quotePost: PostCard.quote,
+                      );
+                    },
                   );
-                },
-              );
-              // TODO(victor-tinoco): Add pagination.
-            }
-          },
-        ),
+                  // TODO(victor-tinoco): Add pagination.
+                }
+              },
+            ),
+          );
+        },
       ),
     );
   }

@@ -1,7 +1,7 @@
 import 'package:posterr/domain/domain.dart';
 
 class ContentRepositoryMock implements ContentRepository {
-  final _cache = <Content>[
+  List<Content> _cache = <Content>[
     Content.quotePost(
       author: User(username: 'victor-tinoco', joinedAt: DateTime(2020, 3, 2)),
       message: 'I totally agree.',
@@ -68,7 +68,7 @@ class ContentRepositoryMock implements ContentRepository {
 
   @override
   Future<EmptyResult> shareContent(Content content) async {
-    _cache.add(content);
+    _cache = [content, ..._cache];
     return const EmptyResult.success();
   }
 }
