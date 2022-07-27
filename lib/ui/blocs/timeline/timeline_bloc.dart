@@ -1,7 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:posterr/domain/domain.dart';
-import 'package:posterr/ui/pages/home/bloc/timeline_event.dart';
-import 'package:posterr/ui/pages/home/bloc/timeline_state.dart';
+
+import 'timeline_event.dart';
+import 'timeline_state.dart';
 
 // TODO(victor-tinoco): Provide tests for this bloc.
 class TimelineBloc extends Bloc<TimelineEvent, TimelineState> {

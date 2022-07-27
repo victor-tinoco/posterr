@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:posterr/data/repositories/auth.dart';
 import 'package:posterr/data/repositories/content.dart';
 import 'package:posterr/domain/domain.dart';
-import 'package:posterr/ui/pages/home/bloc/timeline_bloc.dart';
-import 'package:posterr/ui/pages/home/bloc/timeline_event.dart';
-import 'package:posterr/ui/pages/home/bloc/timeline_state.dart';
+import 'package:posterr/ui/blocs/timeline/timeline_bloc.dart';
+import 'package:posterr/ui/blocs/timeline/timeline_event.dart';
+import 'package:posterr/ui/blocs/timeline/timeline_state.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
