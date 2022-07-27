@@ -34,7 +34,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => TimelineBloc(getTimelineContent: getTimelineContent, sharePost: sharePost) //
+      create: (context) => TimelineBloc(getContent: getTimelineContent, sharePost: sharePost) //
         ..add(const TimelineEvent.contentsFetched()),
       child: Builder(
         builder: (context) {

@@ -7,20 +7,20 @@ import 'timeline_state.dart';
 // TODO(victor-tinoco): Provide tests for this bloc.
 class TimelineBloc extends Bloc<TimelineEvent, TimelineState> {
   TimelineBloc({
-    required this.getTimelineContent,
+    required this.getContent,
     required this.sharePost,
   }) : super(TimelineState.initial()) {
     on<ContentsFetchedTimelineEvent>(_onContentsFetched);
     on<PostSharedTimelineEvent>(_onPostShared);
   }
 
-  final GetTimelineContent getTimelineContent;
+  final GetContent getContent;
   final SharePost sharePost;
 
   Future<void> _onContentsFetched(ContentsFetchedTimelineEvent event, Emitter<TimelineState> emit) async {
     emit(state.copyWith(status: TimelineStatus.loading));
 
-    final result = await getTimelineContent();
+    final result = await getContent();
 
     result.when(
       data: (list) => emit(TimelineState(status: TimelineStatus.success, contentList: list)),
