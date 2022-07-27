@@ -112,9 +112,7 @@ class PostCard extends StatelessWidget {
         children: [
           RichText(
             text: TextSpan(style: const TextStyle(color: Colors.black), children: [
-              TextSpan(
-                text: post.message,
-              ),
+              TextSpan(text: post.message),
               TextSpan(
                 text: ' - @${post.author.username}',
                 style: const TextStyle(color: Colors.grey),

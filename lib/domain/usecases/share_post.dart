@@ -39,6 +39,10 @@ class SharePost {
       }
     }
 
+    if (message.length > 777) {
+      return EmptyResult.failure(TooMuchLongMessageFailure());
+    }
+
     // TODO(victor-tinoco): Use clock package in order to be possible to test this date.
     final post = Post(
       author: authRepository.loggedUser.value!,
@@ -53,6 +57,11 @@ class SharePost {
 class DailyPostsLimitExceededFailure implements Failure {
   @override
   String get message => 'You have reached out your daily post limit. Try again tomorrow.';
+}
+
+class TooMuchLongMessageFailure implements Failure {
+  @override
+  String get message => 'Posts can have a maximum of 777 characters.';
 }
 
 // TODO(victor-tinoco): Place this extension in a proper path and reuse.
