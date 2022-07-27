@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:posterr/data/repositories/auth.dart';
-import 'package:posterr/data/repositories/content.dart';
+import 'package:posterr/data/data.dart';
 import 'package:posterr/domain/domain.dart';
-import 'package:posterr/ui/pages/home/home_page.dart';
-import 'package:posterr/ui/pages/profile/profile_page.dart';
+import 'package:posterr/ui/ui.dart';
 import 'package:provider/provider.dart';
 
 void main() {

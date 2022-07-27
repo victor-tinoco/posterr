@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:posterr/domain/domain.dart';
-import 'package:posterr/ui/widgets/share_post_text_field.dart';
-import 'package:posterr/ui/widgets/timeline/timeline.dart';
+import 'package:posterr/ui/ui.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
