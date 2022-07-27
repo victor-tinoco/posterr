@@ -3,7 +3,7 @@ import 'package:posterr/domain/domain.dart';
 class ContentRepositoryMock implements ContentRepository {
   List<Content> _cache = <Content>[
     Content.quotePost(
-      author: User(username: 'victor-tinoco', joinedAt: DateTime(2020, 3, 2)),
+      author: User(username: 'victor-tinoco', joinedAt: DateTime(2020, 05, 13)),
       message: 'I totally agree.',
       post: Post(
         author: User(username: 'alesandro123', joinedAt: DateTime(2020, 3, 17)),
@@ -18,7 +18,7 @@ class ContentRepositoryMock implements ContentRepository {
       postedAt: DateTime(2022, 7, 27),
     ),
     Content.repost(
-      author: User(username: 'victor-tinoco', joinedAt: DateTime(2020, 3, 2)),
+      author: User(username: 'victor-tinoco', joinedAt: DateTime(2020, 05, 13)),
       originalPost: Post(
         author: User(username: 'jordanp2', joinedAt: DateTime(2020, 7, 3)),
         message: "Just sharing some content here. Amazing new social media! Congrats Posterr's team!",
