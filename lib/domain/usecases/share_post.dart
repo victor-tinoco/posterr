@@ -1,16 +1,15 @@
 import 'package:posterr/domain/domain.dart';
 
-/// {@template domain.post_content}
-/// Shares a given [content].
+/// {@template domain.share_post}
+/// Shares a given text-based content.
 ///
-/// When sharing a content, it is not possible to set an author other than the logged
-/// in. Also, returns a failure when the user has reached out its daily post limit.
+/// Returns a failure when the user has reached out its daily post limit.
 ///
 /// See more:
-/// * [Content], an user-generated text-based content.
+/// * [Post], an user-generated text-based content.
 /// {@endtemplate}
-class ShareContent {
-  ShareContent({
+class SharePost {
+  SharePost({
     required this.getLoggedUserContent,
     required this.contentRepository,
     required this.authRepository,
@@ -20,8 +19,8 @@ class ShareContent {
   final AuthRepository authRepository;
   final ContentRepository contentRepository;
 
-  /// {@macro domain.post_content}
-  Future<EmptyResult> call(Content content) async {
+  /// {@macro domain.share_post}
+  Future<EmptyResult> call(String message) async {
     final userContentResult = await getLoggedUserContent();
 
     // TODO(victor-tinoco): I don't think this logic should be in the front-side,
@@ -40,20 +39,18 @@ class ShareContent {
       }
     }
 
-    if (content.author != authRepository.loggedUser.value) {
-      return EmptyResult.failure(UnauthorizedPostAuthorFailure());
-    }
+    // TODO(victor-tinoco): Use clock package in order to be possible to test this date.
+    final post = Post(
+      author: authRepository.loggedUser.value!,
+      message: message,
+      postedAt: DateTime.now(),
+    );
 
-    return contentRepository.shareContent(content);
+    return contentRepository.shareContent(post);
   }
 }
 
 class DailyPostsLimitExceededFailure implements Failure {
   @override
   String get message => 'You have reached out your daily post limit. Try again tomorrow.';
-}
-
-class UnauthorizedPostAuthorFailure implements Failure {
-  @override
-  String get message => 'It is not possible to share a content with an author other than you.';
 }
