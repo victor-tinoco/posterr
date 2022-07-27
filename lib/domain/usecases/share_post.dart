@@ -1,5 +1,8 @@
 import 'package:posterr/domain/domain.dart';
 
+/// The maximum length in which a [Post]'s message can be written.
+const maxPostMessageLength = 777;
+
 /// {@template domain.share_post}
 /// Shares a given text-based content.
 ///
@@ -39,7 +42,7 @@ class SharePost {
       }
     }
 
-    if (message.length > 777) {
+    if (message.length > maxPostMessageLength) {
       return EmptyResult.failure(TooMuchLongMessageFailure());
     }
 
@@ -61,7 +64,7 @@ class DailyPostsLimitExceededFailure implements Failure {
 
 class TooMuchLongMessageFailure implements Failure {
   @override
-  String get message => 'Posts can have a maximum of 777 characters.';
+  String get message => 'Posts can have a maximum of $maxPostMessageLength characters.';
 }
 
 // TODO(victor-tinoco): Place this extension in a proper path and reuse.

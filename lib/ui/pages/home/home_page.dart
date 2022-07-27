@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:posterr/domain/domain.dart';
 import 'package:posterr/ui/pages/profile/profile_page.dart';
+import 'package:posterr/ui/widgets/share_post_text_field.dart';
 import 'package:posterr/ui/widgets/timeline/timeline.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,14 +15,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final sharePostTextController = TextEditingController();
-
-  @override
-  void dispose() {
-    sharePostTextController.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -33,30 +26,19 @@ class _HomePageState extends State<HomePage> {
             appBar: AppBar(
               title: const Text('Posterr'),
               bottom: PreferredSize(
-                preferredSize: const Size.fromHeight(58),
+                preferredSize: const Size.fromHeight(90),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
                   child: Row(
                     children: [
                       Expanded(
-                        child: TextField(
-                          controller: sharePostTextController,
-                          decoration: const InputDecoration(
-                            border: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
-                            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
-                            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
-                          ),
+                        child: SharePostTextField(
+                          onPost: (message) {
+                            final bloc = context.read<TimelineBloc>();
+                            final event = TimelineEvent.postShared(message);
+                            bloc.add(event);
+                          },
                         ),
-                      ),
-                      const SizedBox(width: 8.0),
-                      IconButton(
-                        icon: const Icon(Icons.send),
-                        onPressed: () {
-                          final bloc = context.read<TimelineBloc>();
-                          final event = TimelineEvent.postShared(sharePostTextController.text);
-                          bloc.add(event);
-                          sharePostTextController.clear();
-                        },
                       ),
                       const SizedBox(width: 8.0),
                       IconButton(

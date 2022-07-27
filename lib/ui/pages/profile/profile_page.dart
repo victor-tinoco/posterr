@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:posterr/domain/domain.dart';
+import 'package:posterr/ui/widgets/share_post_text_field.dart';
 import 'package:posterr/ui/widgets/timeline/timeline.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -14,14 +15,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final sharePostTextController = TextEditingController();
-
-  @override
-  void dispose() {
-    sharePostTextController.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -63,24 +56,12 @@ class _ProfilePageState extends State<ProfilePage> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(24.0),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: TextField(
-                                controller: sharePostTextController,
-                              ),
-                            ),
-                            const SizedBox(width: 8.0),
-                            IconButton(
-                              icon: const Icon(Icons.send),
-                              onPressed: () {
-                                final bloc = context.read<TimelineBloc>();
-                                final event = TimelineEvent.postShared(sharePostTextController.text);
-                                bloc.add(event);
-                                sharePostTextController.clear();
-                              },
-                            ),
-                          ],
+                        child: SharePostTextField(
+                          onPost: (message) {
+                            final bloc = context.read<TimelineBloc>();
+                            final event = TimelineEvent.postShared(message);
+                            bloc.add(event);
+                          },
                         ),
                       ),
                       const Expanded(child: Timeline())
