@@ -32,9 +32,9 @@ class SharePost {
     } else {
       final userContent = userContentResult.whenOrNull(data: (list) => list) ?? [];
       // TODO(victor-tinoco): Use clock package in order to be possible to test this date.
-      final userContentPostedToday = userContent.where((content) => content.postedAt == DateTime.now());
+      final userContentPostedToday = userContent.where((content) => content.postedAt.isAtTheSameDateOf(DateTime.now()));
 
-      if (userContentPostedToday.length >= 4) {
+      if (userContentPostedToday.length >= 5) {
         return EmptyResult.failure(DailyPostsLimitExceededFailure());
       }
     }
@@ -53,4 +53,14 @@ class SharePost {
 class DailyPostsLimitExceededFailure implements Failure {
   @override
   String get message => 'You have reached out your daily post limit. Try again tomorrow.';
+}
+
+// TODO(victor-tinoco): Place this extension in a proper path and reuse.
+extension on DateTime {
+  /// Whether or not this date is the same of an [other] one.
+  ///
+  /// It won't consider time when comparing.
+  bool isAtTheSameDateOf(DateTime other) {
+    return year == other.year && month == other.month && day == other.day;
+  }
 }
