@@ -3,9 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:posterr/data/repositories/auth.dart';
 import 'package:posterr/data/repositories/content.dart';
 import 'package:posterr/domain/domain.dart';
-import 'package:posterr/ui/blocs/timeline/timeline_bloc.dart';
-import 'package:posterr/ui/blocs/timeline/timeline_event.dart';
-import 'package:posterr/ui/blocs/timeline/timeline_state.dart';
+import 'package:posterr/ui/pages/profile/profile_page.dart';
+import 'package:posterr/ui/widgets/timeline/timeline.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -67,38 +66,19 @@ class _HomePageState extends State<HomePage> {
                           sharePostTextController.clear();
                         },
                       ),
+                      const SizedBox(width: 8.0),
+                      IconButton(
+                        icon: const Icon(Icons.person),
+                        onPressed: () {
+                          Navigator.of(context).pushNamed(ProfilePage.routeName);
+                        },
+                      ),
                     ],
                   ),
                 ),
               ),
             ),
-            body: BlocBuilder<TimelineBloc, TimelineState>(
-              builder: (context, state) {
-                if (state.contentList.isEmpty) {
-                  switch (state.status) {
-                    case TimelineStatus.loading:
-                      return const Center(child: CircularProgressIndicator());
-                    case TimelineStatus.failure:
-                      return const Center(child: Text('Something went wrong, try again later.'));
-                    case TimelineStatus.success:
-                      return const Center(child: Text('Empty timeline, try sharing some content.'));
-                  }
-                } else {
-                  return ListView.separated(
-                    itemCount: state.contentList.length,
-                    separatorBuilder: (context, index) => const Divider(height: 1, thickness: 1),
-                    itemBuilder: (context, index) {
-                      return state.contentList[index].map(
-                        post: PostCard.new,
-                        repost: RepostCard.new,
-                        quotePost: PostCard.quote,
-                      );
-                    },
-                  );
-                  // TODO(victor-tinoco): Add pagination.
-                }
-              },
-            ),
+            body: const Timeline(),
           );
         },
       ),
