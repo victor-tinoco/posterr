@@ -6,6 +6,7 @@ import 'package:posterr/domain/domain.dart';
 /// It is possible to provide a [page], but if `null` returns the whole list.
 /// {@endtemplate}
 class GetLoggedUserContent implements GetContent {
+  /// {@macro domain.get_logged_user_content}
   GetLoggedUserContent({
     required this.contentRepository,
     required this.authRepository,

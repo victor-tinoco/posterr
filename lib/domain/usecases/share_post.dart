@@ -12,6 +12,7 @@ const maxPostMessageLength = 777;
 /// * [Post], an user-generated text-based content.
 /// {@endtemplate}
 class SharePost {
+  /// {@macro domain.share_post}
   SharePost({
     required this.getLoggedUserContent,
     required this.contentRepository,

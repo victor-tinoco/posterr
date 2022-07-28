@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:posterr/data/data.dart';
 import 'package:posterr/domain/domain.dart';
+import 'package:posterr/domain/usecases/get_user_content_info.dart';
 import 'package:posterr/ui/ui.dart';
 import 'package:provider/provider.dart';
 
@@ -27,6 +28,7 @@ class _PosterrAppState extends State<PosterrApp> {
         Provider.value(value: contentRepository),
         Provider(create: (context) => GetTimelineContent(contentRepository: contentRepository)),
         Provider(create: (context) => GetLoggedUserContent(contentRepository: contentRepository, authRepository: authRepository)),
+        Provider(create: (context) => GetUserContentInfo(contentRepository: contentRepository)),
         Provider(
           create: (context) {
             return SharePost(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:posterr/domain/domain.dart';
+import 'package:posterr/domain/usecases/get_user_content_info.dart';
 import 'package:posterr/ui/ui.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -14,6 +15,8 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  late final userContentInfo = context.read<GetUserContentInfo>()(context.read<AuthRepository>().loggedUser.value!);
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -43,6 +46,20 @@ class _ProfilePageState extends State<ProfilePage> {
                           const SizedBox(height: 8.0),
                           const Text('Joined at', style: TextStyle(color: Colors.grey)),
                           Text(joinedAt != null ? DateFormat.yMMMd().format(joinedAt) : ''),
+                          const SizedBox(height: 8.0),
+                          const Text('Shared content info', style: TextStyle(color: Colors.grey)),
+                          FutureBuilder<Result<UserContentInfo>>(
+                            future: userContentInfo,
+                            builder: (context, snapshot) {
+                              final result = snapshot.data;
+                              if (result != null && result is ResultData<UserContentInfo>) {
+                                return Text(result.value.describedCount);
+                              } else {
+                                // TODO(victor-tinoco): Improve this loading with a shimmer or stl.
+                                return const SizedBox.shrink();
+                              }
+                            },
+                          ),
                         ],
                       );
                     },

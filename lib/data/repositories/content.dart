@@ -71,4 +71,18 @@ class ContentRepositoryMock implements ContentRepository {
     _cache = [content, ..._cache];
     return const EmptyResult.success();
   }
+
+  @override
+  Future<Result<UserContentInfo>> getContentInfo(User user) async {
+    final contentFromGivenUser = _cache //
+        .where((content) => content.author == user)
+        .toList();
+
+    final info = UserContentInfo(
+      postsCount: contentFromGivenUser.whereType<Post>().length,
+      repostsCount: contentFromGivenUser.whereType<Repost>().length,
+      quotePostsCount: contentFromGivenUser.whereType<QuotePost>().length,
+    );
+    return Result.data(info);
+  }
 }

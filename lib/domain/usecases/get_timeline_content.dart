@@ -6,6 +6,7 @@ import 'package:posterr/domain/domain.dart';
 /// It is possible to provide a [page], but if `null` returns the whole list.
 /// {@endtemplate}
 class GetTimelineContent implements GetContent {
+  /// {@macro domain.get_timeline_content}
   GetTimelineContent({required this.contentRepository});
 
   final ContentRepository contentRepository;

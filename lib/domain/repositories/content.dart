@@ -8,4 +8,6 @@ abstract class ContentRepository {
   });
 
   Future<EmptyResult> shareContent(Content content);
+
+  Future<Result<UserContentInfo>> getContentInfo(User user);
 }
